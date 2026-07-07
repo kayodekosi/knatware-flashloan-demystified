@@ -1,6 +1,6 @@
 # Flash Loans, Demystified 🪙
 
-**A cartoon field guide to flash loans and Instadapp Pro's spell-based automation — told by a coin, a vault, a robot, and a shield.**
+**A guide to flash loans and Instadapp Pro's spell-based automation — told by a coin, a vault, a robot, and a shield.**
 
 [![Format](https://img.shields.io/badge/format-PDF-red)]()
 [![Pages](https://img.shields.io/badge/pages-16-blue)]()
