@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Flash Loans, Demystified</title>
+<style>
+  @page { size: 8.5in 11in; margin: 0; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #2A2440;
+  }
+  .page {
+    position: relative;
+    width: 8.5in;
+    height: 11in;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .bg { position: absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%; }
+  .bg-purple { background: linear-gradient(160deg, #5B3FE0 0%, #4028B8 55%, #301A8E 100%); }
+  .bg-cream  { background: #FBF6EE; }
+  .bg-navy   { background: linear-gradient(160deg, #23204A 0%, #14122E 100%); }
+  .bg-teal   { background: linear-gradient(160deg, #0E9484 0%, #0A6B60 100%); }
+  .bg-coral  { background: linear-gradient(160deg, #E85A3B 0%, #C23F24 100%); }
+  .bg-gold   { background: linear-gradient(160deg, #FFC94A 0%, #F2A719 100%); }
+
+  .circle { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.10); }
+  .content { position: relative; z-index: 2; padding: 0.58in 0.78in; height: 100%; }
+
+  .badge {
+    display: inline-block; background: #FFC94A; color: #3A1F9E;
+    font-size: 11pt; font-weight: 700; letter-spacing: 1.5pt;
+    padding: 6pt 16pt; border-radius: 20pt; margin-bottom: 14pt;
+  }
+  .badge-light { background: rgba(255,255,255,0.92); color: #3A1F9E; }
+
+  h1.title { font-size: 40pt; line-height: 1.08; color: white; margin: 0 0 14pt 0; font-weight: 800; }
+  .subtitle { font-size: 13pt; color: rgba(255,255,255,0.92); line-height: 1.45; max-width: 5.6in; margin-bottom: 0.3in; }
+
+  h2.chapter-title { font-size: 22pt; margin: 0 0 5pt 0; font-weight: 800; }
+  .chapter-kicker {
+    font-size: 10.5pt; font-weight: 800; letter-spacing: 2pt; text-transform: uppercase;
+    margin-bottom: 6pt; display: block;
+  }
+  .dark-text h2.chapter-title, .dark-text p, .dark-text li, .dark-text .chapter-kicker { color: #2A2440; }
+  .dark-text .chapter-kicker { color: #6B4CF0; }
+  .light-text h2.chapter-title, .light-text p, .light-text li { color: white; }
+  .light-text .chapter-kicker { color: #FFF6D9; }
+
+  p { font-size: 10.3pt; line-height: 1.42; margin: 0 0 8pt 0; }
+  .light-text p { color: rgba(255,255,255,0.96); }
+
+  .story-box { background: rgba(255,255,255,0.16); border-left: 4pt solid #FFC94A; border-radius: 6pt; padding: 10pt 14pt; margin: 8pt 0; }
+  .story-box.on-cream { background: #F1E9FF; border-left: 4pt solid #6B4CF0; }
+  .story-box p:last-child { margin-bottom: 0; }
+  .story-box p { color: #2A2440; }
+  .light-text .story-box p { color: white; }
+  .story-label { font-weight: 800; font-size: 9.5pt; letter-spacing: 1pt; text-transform: uppercase; color: #B5750E; margin-bottom: 5pt; display: block; }
+  .on-cream .story-label { color: #6B4CF0; }
+  .light-text .story-label { color: #FFF6D9; }
+
+  .example-box { background: #FFF3DF; border-radius: 6pt; padding: 10pt 14pt; margin: 8pt 0; border: 1pt solid #F2D9A0; }
+  .example-box p { color: #2A2440; }
+  .example-box .story-label { color: #B5750E; }
+  .light-text .example-box { background: rgba(255,255,255,0.18); border: 1pt solid rgba(255,255,255,0.35); }
+  .light-text .example-box p { color: white; }
+  .light-text .example-box .story-label { color: #FFF6D9; }
+
+  ul.styled { margin: 0 0 8pt 0; padding-left: 0; list-style: none; }
+  ul.styled li { padding-left: 18pt; position: relative; margin-bottom: 6pt; font-size: 10.3pt; line-height: 1.38; }
+  ul.styled li:before { content: "\2192"; position: absolute; left: 0; font-weight: 800; color: #6B4CF0; }
+  .light-text ul.styled li:before { color: #FFE9A8; }
+
+  .icon-row { display: flex; justify-content: space-between; margin-top: 0.3in; }
+  .icon-col { text-align: center; width: 22%; }
+  .icon-tag { display: inline-block; background: rgba(20,15,50,0.6); color: white; font-size: 9.5pt; font-weight: 700; padding: 4pt 12pt; border-radius: 14pt; margin-top: 6pt; }
+
+  .footer { position: absolute; bottom: 0.32in; left: 0.78in; right: 0.78in; font-size: 8.5pt; color: rgba(255,255,255,0.7); display: flex; justify-content: space-between; }
+
+  .toc-item { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1pt dotted #D8CDF0; padding: 3.5pt 0; font-size: 10pt; }
+  .toc-item .num { color: #6B4CF0; font-weight: 700; margin-right: 8pt; }
+  .toc-item .pg { color: #9A8FBF; }
+
+  .quiz-q { margin-bottom: 8pt; font-size: 10.3pt; line-height: 1.4; }
+  .quiz-q .qnum { font-weight: 800; color: #6B4CF0; margin-right: 6pt; }
+  .quiz-options { margin: 5pt 0 0 20pt; font-size: 10pt; }
+  .quiz-options div { margin-bottom: 3pt; }
+
+  .answer-box { background: #E9FBF3; border: 1pt solid #7FD4AE; border-radius: 6pt; padding: 9pt 14pt; margin-top: 8pt; }
+  .answer-box p { font-size: 10pt; line-height: 1.4; color: #124E38; }
+  .answer-box .story-label { color: #0E7A50; }
+  .light-text .answer-box { background: rgba(255,255,255,0.92); }
+  .light-text .answer-box p { color: #124E38; }
+
+  table.glossary { width: 100%; border-collapse: collapse; font-size: 9.3pt; }
+  table.glossary td { padding: 5pt 6pt; border-bottom: 1pt solid #E7DEF7; vertical-align: top; }
+  table.glossary td.term { font-weight: 700; color: #6B4CF0; width: 26%; }
+
+  .divider { height: 2pt; background: rgba(255,255,255,0.3); margin: 8pt 0; border-radius: 2pt; }
+  .divider.on-cream { background: #E7DEF7; }
+
+  .scene { width: 100%; display: block; margin: 6pt 0 10pt 0; }
+  .scene-caption { text-align:center; font-size: 8.5pt; font-style: italic; opacity: 0.8; margin-top: -4pt; margin-bottom: 8pt; }
+  .light-text .scene-caption { color: rgba(255,255,255,0.85); }
+  .dark-text .scene-caption { color: #6B5A8C; }
+
+  .cover-footer { position: absolute; bottom: 0.38in; left: 0.78in; right: 0.78in; font-size: 9pt; color: rgba(255,255,255,0.8); }
+  .cover-footer .authorline { font-weight: 700; color: white; margin-bottom: 2pt; }
+</style>
+</head>
+<body>
+
+<!-- ============ SHARED SVG DEFINITIONS ============ -->
+<svg width="0" height="0" style="position:absolute">
+<defs>
+
+  <!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs>
+</svg>
+
+<!-- ============================================================ -->
+<!-- PAGE 1 — COVER -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-purple"></div>
+  <div class="circle" style="width:3.2in;height:3.2in;top:-1in;left:-1in;"></div>
+  <div class="circle" style="width:2.6in;height:2.6in;top:1.3in;right:-1.1in;background:rgba(255,255,255,0.07);"></div>
+  <div class="circle" style="width:3.6in;height:3.6in;bottom:-1.6in;right:-1.4in;"></div>
+
+  <div class="content" style="padding-top:0.9in;">
+    <h1 class="title">FLASH LOANS,<br>DEMYSTIFIED</h1>
+    <p class="subtitle">Instadapp Pro &amp; its flash-loan strategies, explained by a coin, a vault, a robot &amp; a shield — with plain-English stories, cartoon scenes, and exercises you can actually check your understanding against.</p>
+
+    <div class="icon-row" style="margin-top:1.2in; width: 92%;">
+      <div class="icon-col">
+        <svg viewBox="0 0 120 120" width="82" height="82"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs><use href="#icon-coin"/></svg>
+        <div class="icon-tag">Borrow!</div>
+      </div>
+      <div class="icon-col">
+        <svg viewBox="0 0 120 120" width="82" height="82"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs><use href="#icon-vault"/></svg>
+        <div class="icon-tag">Cast Spells!</div>
+      </div>
+      <div class="icon-col">
+        <svg viewBox="0 0 120 120" width="82" height="82"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs><use href="#icon-robot"/></svg>
+        <div class="icon-tag">Automate!</div>
+      </div>
+      <div class="icon-col">
+        <svg viewBox="0 0 120 120" width="82" height="82"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs><use href="#icon-shield"/></svg>
+        <div class="icon-tag">Stay Safe!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <div class="authorline">Kayode Okosi &middot; Knatware Technology UK</div>
+    <div>Illustrated technical primer &middot; educational only, not financial advice &middot; page 1 / 16</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 2 — MEET THE CAST + TOC -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-cream"></div>
+  <div class="content dark-text">
+    <span class="badge" style="background:#F1E9FF; color:#5B3FE0;">BEFORE WE START</span>
+    <h2 class="chapter-title">Meet the Cast</h2>
+    <p>Every big idea is easier to hold onto when it has a face. So before we talk about code and contracts, meet the four characters who will guide you through this book — you'll see them again in little cartoon scenes throughout.</p>
+
+    <svg class="scene" viewBox="0 0 700 160" style="max-height:1.35in; margin-bottom:4pt;"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs>
+      <rect x="0" y="0" width="700" height="160" rx="14" fill="#F1E9FF"/>
+      <g transform="translate(50,20) scale(0.82)"><use href="#icon-coin"/></g>
+      <text x="105" y="150" font-size="13" font-weight="700" fill="#2A2440" text-anchor="middle">The Coin</text>
+      <g transform="translate(220,20) scale(0.82)"><use href="#icon-vault"/></g>
+      <text x="280" y="150" font-size="13" font-weight="700" fill="#2A2440" text-anchor="middle">The Vault</text>
+      <g transform="translate(390,20) scale(0.82)"><use href="#icon-robot"/></g>
+      <text x="450" y="150" font-size="13" font-weight="700" fill="#2A2440" text-anchor="middle">The Robot</text>
+      <g transform="translate(560,20) scale(0.82)"><use href="#icon-shield"/></g>
+      <text x="618" y="150" font-size="13" font-weight="700" fill="#2A2440" text-anchor="middle">The Shield</text>
+    </svg>
+
+    <div style="font-size:10pt;">
+      <p><strong>The Coin</strong> is the money you borrow — huge, free for a moment, and it must go home before the transaction ends. &nbsp; <strong>The Vault</strong> is your DSA (Decentralized Smart Account) on Instadapp Pro, which can hold and cast "spells."</p>
+      <p><strong>The Robot</strong> is automation — the bot or keeper that watches the market and pulls the trigger for you, any hour of the day. &nbsp; <strong>The Shield</strong> is safety — the checks and fail-safes that stop a clever idea from becoming an expensive mistake.</p>
+    </div>
+
+    <div class="divider on-cream"></div>
+
+    <h2 class="chapter-title" style="font-size:16pt; margin-top:4pt;">What's Inside</h2>
+    <div class="toc-item"><div><span class="num">1</span>What Even Is a Flash Loan?</div><div class="pg">3</div></div>
+    <div class="toc-item"><div><span class="num">2</span>Exercise: Flash Loan Basics</div><div class="pg">4</div></div>
+    <div class="toc-item"><div><span class="num">3</span>Meet Instadapp Pro — The Vault</div><div class="pg">5</div></div>
+    <div class="toc-item"><div><span class="num">4</span>Spells &amp; Spell Chains</div><div class="pg">6</div></div>
+    <div class="toc-item"><div><span class="num">5</span>Exercise: Order the Spells</div><div class="pg">7</div></div>
+    <div class="toc-item"><div><span class="num">6</span>Connectors — The Universal Adapters</div><div class="pg">8</div></div>
+    <div class="toc-item"><div><span class="num">7</span>The Robot — Automating Your Strategy</div><div class="pg">9</div></div>
+    <div class="toc-item"><div><span class="num">8</span>Exercise: Spot the Trigger</div><div class="pg">10</div></div>
+    <div class="toc-item"><div><span class="num">9</span>Strategy Field Guide, Part 1 (Arbitrage &amp; Collateral Swap)</div><div class="pg">11</div></div>
+    <div class="toc-item"><div><span class="num">10</span>Strategy Field Guide, Part 2 (Refinance &amp; Leverage Loops)</div><div class="pg">12</div></div>
+    <div class="toc-item"><div><span class="num">11</span>Exercise: Match the Strategy</div><div class="pg">13</div></div>
+    <div class="toc-item"><div><span class="num">12</span>The Shield — Staying Safe</div><div class="pg">14</div></div>
+    <div class="toc-item"><div><span class="num">13</span>Final Quiz &amp; Glossary</div><div class="pg">15</div></div>
+    <div class="toc-item"><div><span class="num">14</span>About This Guide &amp; The GitHub Project</div><div class="pg">16</div></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 3 — CHAPTER 1: WHAT IS A FLASH LOAN -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-purple"></div>
+  <div class="circle" style="width:2.4in;height:2.4in;top:-0.8in;right:-0.6in;"></div>
+  <div class="circle" style="width:2in;height:2in;bottom:-0.9in;left:-0.7in;background:rgba(255,255,255,0.06);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 1</span>
+    <h2 class="chapter-title">What Even Is a Flash Loan?</h2>
+
+    <p>Imagine a library where you can borrow any book, no card, no ID — on one condition: return it before you walk out the door. If you're still holding it when you cross the threshold, the whole visit is erased, as if you never entered at all.</p>
+
+    <svg class="scene" viewBox="0 0 700 210" style="max-height:2in;">
+      <rect x="0" y="0" width="700" height="210" rx="14" fill="rgba(255,255,255,0.10)"/>
+      <g transform="translate(60,40)">
+        <rect x="0" y="30" width="150" height="90" rx="6" fill="#F9E6C8"/>
+        <path d="M-10 30 L155 30 L140 0 L5 0 Z" fill="#E8543B"/>
+        <circle cx="35" cy="70" r="10" fill="#7ED957"/><circle cx="55" cy="75" r="10" fill="#7ED957"/><circle cx="45" cy="60" r="10" fill="#7ED957"/>
+        <text x="75" y="145" font-size="14" font-weight="700" fill="white" text-anchor="middle">Stall A: £1.00</text>
+      </g>
+      <g transform="translate(490,40)">
+        <rect x="0" y="30" width="150" height="90" rx="6" fill="#F9E6C8"/>
+        <path d="M-10 30 L155 30 L140 0 L5 0 Z" fill="#4E8FF0"/>
+        <circle cx="35" cy="70" r="10" fill="#7ED957"/><circle cx="55" cy="75" r="10" fill="#7ED957"/><circle cx="45" cy="60" r="10" fill="#7ED957"/>
+        <text x="75" y="145" font-size="14" font-weight="700" fill="white" text-anchor="middle">Stall B: £1.05</text>
+      </g>
+      <g transform="translate(280,55) scale(0.85)"><use href="#icon-coin"/></g>
+      <path d="M215 130 Q350 190 470 130" stroke="#FFE9A8" stroke-width="3" fill="none" stroke-dasharray="6,6" marker-end="url(#arrowhead)"/>
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#FFE9A8"/>
+        </marker>
+      </defs>
+    </svg>
+    <div class="scene-caption">The Coin buys low at Stall A and sells high at Stall B — profit, before either stall closes.</div>
+
+    <div class="story-box">
+      <span class="story-label">Why does this even work?</span>
+      <p>A blockchain transaction is all-or-nothing — every step succeeds together, or none of them do. This is called <strong>atomicity</strong>. A flash loan is a contract that hands you money at the start of that unit and checks, right at the end, that it came back plus a small fee. There's no way to walk off with the cash — the transaction simply won't allow it.</p>
+    </div>
+
+    <p>The key idea: a flash loan doesn't lend you risk. It lends you <em>opportunity</em>, for a few fleeting seconds, with the blockchain acting as the strictest loan officer imaginable.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 4 — EXERCISE 1 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-cream"></div>
+  <div class="content dark-text">
+    <span class="badge" style="background:#F1E9FF; color:#5B3FE0;">TRY IT YOURSELF</span>
+    <h2 class="chapter-title">Exercise 1 — Flash Loan Basics</h2>
+    <p>Test what you just read. Answers are below — no peeking until you've had a go.</p>
+
+    <div class="quiz-q"><span class="qnum">Q1.</span>True or False: A flash loan requires you to put up collateral before you can borrow.</div>
+    <div class="quiz-q">
+      <span class="qnum">Q2.</span>What happens if you fail to repay a flash loan by the end of the transaction?
+      <div class="quiz-options">
+        <div>A) You keep the money but owe interest forever</div>
+        <div>B) The entire transaction is reverted, as if it never happened</div>
+        <div>C) The blockchain pauses until you pay</div>
+      </div>
+    </div>
+    <div class="quiz-q"><span class="qnum">Q3.</span>Fill in the blank: The property that makes flash loans safe for lenders is called ______, meaning every step in a transaction succeeds together, or none do.</div>
+    <div class="quiz-q"><span class="qnum">Q4.</span>In the fruit stall example, what real-world DeFi strategy does buying low at Stall A and selling high at Stall B represent?</div>
+
+    <div class="answer-box">
+      <span class="story-label">Answers</span>
+      <p><strong>A1:</strong> False — that's the entire point of a flash loan; no collateral is required because repayment is enforced by the transaction itself.<br>
+      <strong>A2:</strong> B — the transaction reverts completely, so the lender never actually loses any funds.<br>
+      <strong>A3:</strong> Atomicity.<br>
+      <strong>A4:</strong> Arbitrage — profiting from a price difference for the same asset across two venues.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 5 — CHAPTER 2: MEET INSTADAPP PRO — THE VAULT -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-teal"></div>
+  <div class="circle" style="width:2.6in;height:2.6in;top:-1in;left:-1in;"></div>
+  <div class="circle" style="width:2in;height:2in;bottom:-0.8in;right:-0.8in;background:rgba(255,255,255,0.07);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 2</span>
+    <h2 class="chapter-title">Meet Instadapp Pro — The Vault</h2>
+
+    <p>If a flash loan is a fast, strict librarian, Instadapp Pro is the reading room where the real work happens. At its centre sits a <strong>DSA</strong> — a Decentralized Smart Account.</p>
+
+    <svg class="scene" viewBox="0 0 700 200" style="max-height:1.9in;"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs>
+      <rect x="0" y="0" width="700" height="200" rx="14" fill="rgba(255,255,255,0.10)"/>
+      <rect x="40" y="120" width="230" height="16" rx="4" fill="rgba(255,255,255,0.3)"/>
+      <g transform="translate(60,45)"><use href="#icon-vault"/></g>
+      <text x="150" y="185" font-size="13" font-weight="700" fill="white" text-anchor="middle">Your DSA (the concierge desk)</text>
+      <rect x="300" y="55" width="150" height="95" rx="8" fill="white"/>
+      <text x="375" y="80" font-size="11" fill="#2A2440" text-anchor="middle" font-weight="700">One Request</text>
+      <line x1="315" y1="95" x2="435" y2="95" stroke="#C9BEEA" stroke-width="3"/>
+      <line x1="315" y1="112" x2="435" y2="112" stroke="#C9BEEA" stroke-width="3"/>
+      <line x1="315" y1="129" x2="405" y2="129" stroke="#C9BEEA" stroke-width="3"/>
+      <g transform="translate(500,40)">
+        <circle cx="30" cy="30" r="28" fill="#FFE9A8"/>
+        <rect x="12" y="28" width="36" height="14" rx="4" fill="#2A2440"/>
+        <rect x="18" y="20" width="24" height="12" rx="3" fill="#2A2440"/>
+        <circle cx="19" cy="43" r="4" fill="#2A2440"/><circle cx="41" cy="43" r="4" fill="#2A2440"/>
+        <text x="30" y="72" font-size="10" fill="white" text-anchor="middle">Taxi</text>
+      </g>
+      <g transform="translate(560,90)">
+        <circle cx="30" cy="30" r="28" fill="#FFE9A8"/>
+        <circle cx="30" cy="30" r="11" fill="none" stroke="#2A2440" stroke-width="2.5"/>
+        <line x1="16" y1="20" x2="16" y2="40" stroke="#2A2440" stroke-width="2.5"/>
+        <line x1="44" y1="20" x2="44" y2="40" stroke="#2A2440" stroke-width="2.5"/>
+        <text x="30" y="72" font-size="10" fill="white" text-anchor="middle">Dinner</text>
+      </g>
+      <g transform="translate(500,140)">
+        <circle cx="30" cy="20" r="28" fill="#FFE9A8"/>
+        <path d="M14 12 Q30 4 46 12 Q40 22 30 20 Q20 22 14 12 Z" fill="#2A2440"/>
+        <circle cx="22" cy="14" r="2" fill="#FFE9A8"/><circle cx="38" cy="14" r="2" fill="#FFE9A8"/>
+        <text x="30" y="62" font-size="10" fill="white" text-anchor="middle">Theatre</text>
+      </g>
+    </svg>
+    <div class="scene-caption">One form to the concierge, three bookings confirmed together — or none at all.</div>
+
+    <div class="story-box">
+      <span class="story-label">Think of it like...</span>
+      <p>A hotel concierge with a single request form: "book my taxi, dinner, and theatre tickets — but only confirm any of it if all three are available." One form in, and either the whole evening is booked, or none of it is — you find out immediately.</p>
+    </div>
+
+    <p>This is what makes Instadapp Pro the natural home for flash-loan strategies: a flash loan already demands "all of this happens together or none of it does," and a DSA is a wallet purpose-built to run exactly that kind of checklist.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 6 — CHAPTER 3: SPELLS & SPELL CHAINS -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-cream"></div>
+  <div class="content dark-text">
+    <span class="chapter-kicker">Chapter 3</span>
+    <h2 class="chapter-title">Spells &amp; Spell Chains</h2>
+
+    <p>Instadapp calls each instruction a <strong>spell</strong>: "borrow this," "swap that," "repay there." A <strong>spell chain</strong> is several spells cast back to back, in a fixed order, inside one transaction — like a relay race, where each runner only starts once the baton actually arrives.</p>
+
+    <svg class="scene" viewBox="0 0 700 170" style="max-height:1.6in;">
+      <rect x="0" y="0" width="700" height="170" rx="14" fill="#F1E9FF"/>
+      <g font-size="11" font-weight="700" fill="white" text-anchor="middle">
+        <circle cx="80" cy="80" r="38" fill="#6B4CF0"/><text x="80" y="76">Spell 1</text><text x="80" y="92">Borrow</text>
+        <circle cx="220" cy="80" r="38" fill="#8C6CF5"/><text x="220" y="76">Spell 2</text><text x="220" y="92">Swap</text>
+        <circle cx="360" cy="80" r="38" fill="#A883F7"/><text x="360" y="76">Spell 3</text><text x="360" y="92">Swap</text>
+        <circle cx="500" cy="80" r="38" fill="#8C6CF5"/><text x="500" y="76">Spell 4</text><text x="500" y="92">Repay</text>
+        <circle cx="620" cy="80" r="30" fill="#F5C242"/><text x="620" y="75" fill="#2A2440">Spell 5</text><text x="620" y="90" fill="#2A2440">Sweep</text>
+      </g>
+      <g stroke="#6B4CF0" stroke-width="3" fill="none" marker-end="url(#arrow2)">
+        <path d="M120 80 L180 80"/>
+        <path d="M260 80 L320 80"/>
+        <path d="M400 80 L460 80"/>
+        <path d="M540 80 L588 80"/>
+      </g>
+      <defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#6B4CF0"/></marker></defs>
+    </svg>
+    <div class="scene-caption">Borrow &rarr; Swap &rarr; Swap back &rarr; Repay &rarr; Sweep the profit — one baton, one race, no dropped steps.</div>
+
+    <ul class="styled">
+      <li><strong>Spell 1 — Borrow:</strong> Flash-borrow 100,000 USDC.</li>
+      <li><strong>Spell 2 — Swap:</strong> Buy ETH on Exchange A, where it's cheap.</li>
+      <li><strong>Spell 3 — Swap back:</strong> Sell that ETH on Exchange B, where it's pricier.</li>
+      <li><strong>Spell 4 — Repay:</strong> Return the 100,000 USDC plus the flash-loan fee.</li>
+      <li><strong>Spell 5 — Sweep:</strong> Send the leftover profit to your own wallet.</li>
+    </ul>
+
+    <div class="story-box on-cream">
+      <span class="story-label">Layman's Example</span>
+      <p>If runner three drops the baton — say the swap on Exchange B underperforms — the whole relay is disqualified. In blockchain terms, the transaction simply reverts, and nobody loses their entry fee.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 7 — EXERCISE 2 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-gold"></div>
+  <div class="content dark-text">
+    <span class="badge-light badge">TRY IT YOURSELF</span>
+    <h2 class="chapter-title">Exercise 2 — Order the Spells</h2>
+    <p>Below are five spells from an arbitrage spell chain, shuffled out of order. Write down the correct order (1 to 5) before checking the answer.</p>
+
+    <ul class="styled">
+      <li><strong>Spell W:</strong> Sell the purchased asset on the higher-priced exchange.</li>
+      <li><strong>Spell X:</strong> Repay the flash loan plus fee.</li>
+      <li><strong>Spell Y:</strong> Flash-borrow the starting stablecoin amount.</li>
+      <li><strong>Spell Z:</strong> Send any leftover profit to your wallet.</li>
+      <li><strong>Spell V:</strong> Buy the asset on the lower-priced exchange.</li>
+    </ul>
+
+    <div class="answer-box" style="background:rgba(255,255,255,0.75); border-color:rgba(255,255,255,0.9);">
+      <span class="story-label" style="color:#B5750E;">Answer</span>
+      <p><strong>Correct order: Y &rarr; V &rarr; W &rarr; X &rarr; Z</strong><br>
+      Borrow first (Y), buy where it's cheap (V), sell where it's dear (W), repay the loan (X), and only then sweep whatever is left as profit (Z). Repayment (X) always comes before profit-taking (Z) — the loan must be settled before anything is "yours."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 8 — CHAPTER 4: CONNECTORS -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-purple"></div>
+  <div class="circle" style="width:2.6in;height:2.6in;bottom:-1.1in;left:-1in;"></div>
+  <div class="circle" style="width:1.8in;height:1.8in;top:-0.6in;right:-0.5in;background:rgba(255,255,255,0.06);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 4</span>
+    <h2 class="chapter-title">Connectors — The Universal Adapters</h2>
+
+    <p>A spell chain is only useful if each spell can talk to the outside protocol it needs — Aave, Compound, Uniswap, each with its own rules. This is where <strong>connectors</strong> come in.</p>
+
+    <svg class="scene" viewBox="0 0 700 190" style="max-height:1.8in;"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs>
+      <rect x="0" y="0" width="700" height="190" rx="14" fill="rgba(255,255,255,0.10)"/>
+      <g transform="translate(300,55)"><use href="#icon-vault"/></g>
+      <g stroke="#FFE9A8" stroke-width="3" fill="none">
+        <path d="M350 95 L150 60"/>
+        <path d="M420 95 L620 55"/>
+        <path d="M350 155 L280 160"/>
+      </g>
+      <g font-size="12" font-weight="700" fill="#2A2440" text-anchor="middle">
+        <rect x="70" y="25" width="140" height="55" rx="10" fill="#FFE9A8"/><text x="140" y="58">Aave Connector</text>
+        <rect x="500" y="25" width="150" height="55" rx="10" fill="#FFE9A8"/><text x="575" y="58">Uniswap Connector</text>
+        <rect x="230" y="140" width="170" height="45" rx="10" fill="#FFE9A8"/><text x="315" y="168">Compound Connector</text>
+      </g>
+    </svg>
+    <div class="scene-caption">One DSA, many plugs — each connector translates for a different protocol.</div>
+
+    <ul class="styled">
+      <li><strong>Routing:</strong> One spell chain can hop between protocols without custom integration code for each.</li>
+      <li><strong>Verification:</strong> Not every connector is live, audited, or functional on every network — always confirm a connector is actually deployed on your target chain before building around it.</li>
+    </ul>
+
+    <div class="example-box">
+      <span class="story-label">Layman's Example</span>
+      <p>It's the difference between owning a universal remote and owning one whose "TV" button has actually been programmed for your exact television model. The remote is universal in concept — but each button still needs confirming against the exact device, on the exact network, you're pointing it at.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 9 — CHAPTER 5: THE ROBOT — AUTOMATION -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-coral"></div>
+  <div class="circle" style="width:2.4in;height:2.4in;top:-0.9in;right:-1in;"></div>
+  <div class="circle" style="width:2in;height:2in;bottom:-1in;left:-0.8in;background:rgba(255,255,255,0.07);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 5</span>
+    <h2 class="chapter-title">The Robot — Automating Your Strategy</h2>
+
+    <p>Profitable moments — a price gap, a loan turning unsafe, a rate worth refinancing into — can appear and vanish within seconds, any hour, any day. No human can watch a screen forever. That's the Robot's job.</p>
+
+    <svg class="scene" viewBox="0 0 700 190" style="max-height:1.8in;"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs>
+      <rect x="0" y="0" width="700" height="190" rx="14" fill="rgba(255,255,255,0.10)"/>
+      <g transform="translate(60,45)"><use href="#icon-robot"/></g>
+      <rect x="260" y="40" width="380" height="120" rx="10" fill="white"/>
+      <polyline points="280,140 330,110 380,125 430,80 480,95 530,60 580,75 610,55" fill="none" stroke="#E85A3B" stroke-width="4"/>
+      <line x1="280" y1="70" x2="610" y2="70" stroke="#FFB199" stroke-width="2" stroke-dasharray="5,5"/>
+      <text x="620" y="65" font-size="11" fill="#E85A3B" font-weight="700">trigger</text>
+      <circle cx="530" cy="60" r="7" fill="#E85A3B"/>
+    </svg>
+    <div class="scene-caption">The Robot watches continuously and fires the spell chain the instant your threshold is crossed.</div>
+
+    <div class="story-box">
+      <span class="story-label">Think of it like...</span>
+      <p>A smart thermostat: set "if the room drops below 18&deg;C, turn on the heating," and a small always-on system checks continuously and acts the instant the condition is met. Automation bots do the same for prices, health factors, and rates.</p>
+    </div>
+
+    <ul class="styled">
+      <li><strong>A bot you run yourself</strong> — a script that polls prices or account health and submits the transaction when a threshold is crossed.</li>
+      <li><strong>A keeper network</strong> — independent operators paid a small fee to execute your pre-registered condition, so you don't need your own always-on server.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 10 — EXERCISE 3 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-cream"></div>
+  <div class="content dark-text">
+    <span class="badge" style="background:#FFEDE3; color:#C23F24;">TRY IT YOURSELF</span>
+    <h2 class="chapter-title">Exercise 3 — Spot the Trigger</h2>
+    <p>For each scenario below, identify what condition the Robot should be watching for.</p>
+
+    <div class="quiz-q"><span class="qnum">Q1.</span>A trader wants to close out a leveraged position automatically before it can be liquidated.</div>
+    <div class="quiz-q"><span class="qnum">Q2.</span>A user wants to swap their loan from a pool charging 8% interest to one charging 4%, but only once the saved interest outweighs gas cost.</div>
+    <div class="quiz-q"><span class="qnum">Q3.</span>An arbitrage bot wants to act only when the price gap between two exchanges is wide enough to be profitable after fees.</div>
+
+    <div class="answer-box">
+      <span class="story-label">Answers</span>
+      <p><strong>A1:</strong> Trigger on the position's <em>health factor</em> dropping below a safe threshold (e.g. below 1.1), prompting an automatic deleverage before liquidation.<br>
+      <strong>A2:</strong> Trigger on the interest-rate spread exceeding the estimated gas + flash-loan fee cost of refinancing.<br>
+      <strong>A3:</strong> Trigger on the price spread exceeding a minimum "profit gate," ignoring spreads too small to cover fees and gas.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 11 — STRATEGY FIELD GUIDE PART 1 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-navy"></div>
+  <div class="circle" style="width:2.6in;height:2.6in;top:-1in;left:-1in;background:rgba(255,255,255,0.05);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 6, Part 1</span>
+    <h2 class="chapter-title">Strategy Field Guide — Arbitrage &amp; Collateral Swap</h2>
+
+    <svg class="scene" viewBox="0 0 700 110" style="max-height:1.05in;">
+      <rect x="0" y="0" width="700" height="110" rx="14" fill="rgba(255,255,255,0.07)"/>
+      <g font-size="11" font-weight="700" fill="white" text-anchor="middle">
+        <circle cx="90" cy="55" r="34" fill="#6B4CF0"/><text x="90" y="50">Buy</text><text x="90" y="65">Low</text>
+        <text x="180" y="60" font-size="20" fill="#FFE9A8">&#8594;</text>
+        <circle cx="270" cy="55" r="34" fill="#8C6CF5"/><text x="270" y="50">Sell</text><text x="270" y="65">High</text>
+        <text x="360" y="60" font-size="14" fill="rgba(255,255,255,0.5)">|</text>
+        <circle cx="450" cy="55" r="34" fill="#22B6A6"/><text x="450" y="50">Old</text><text x="450" y="65">Collateral</text>
+        <text x="540" y="60" font-size="20" fill="#FFE9A8">&#8594;</text>
+        <circle cx="620" cy="55" r="34" fill="#0E9484"/><text x="620" y="50">New</text><text x="620" y="65">Collateral</text>
+      </g>
+    </svg>
+
+    <p><strong>Flash Arbitrage.</strong> Borrow an asset, buy it cheap on one venue, sell it dear on another, repay, keep the spread (Chapter 1). The refinement worth adding: a <em>net-profit gate</em> built into the spell chain that reverts the whole transaction if expected profit, after fees and gas, doesn't clear a minimum bar — otherwise a bot could "succeed" while quietly losing money to gas.</p>
+
+    <div class="story-box">
+      <span class="story-label">Layman's Example</span>
+      <p>It's the difference between a trader who checks "will this trip actually be worth the petrol?" before setting off, versus one who goes for any price gap at all and ends up out of pocket once fuel is counted.</p>
+    </div>
+
+    <p><strong>Collateral Swap.</strong> Suppose your loan is backed by ETH, but you'd rather it be backed by a stablecoin instead. Normally: repay, withdraw ETH, deposit stablecoin, re-borrow — a slow dance with real price risk in between. A flash loan collapses it into one atomic step: borrow stablecoin, repay the loan, withdraw ETH, swap it, deposit the stablecoin as fresh collateral, re-borrow to repay the flash loan — done, in one block, at one price.</p>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 12 — STRATEGY FIELD GUIDE PART 2 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-navy"></div>
+  <div class="circle" style="width:2.2in;height:2.2in;bottom:-0.9in;right:-0.9in;background:rgba(255,255,255,0.05);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 6, Part 2</span>
+    <h2 class="chapter-title">Strategy Field Guide — Refinance &amp; Leverage Loops</h2>
+
+    <svg class="scene" viewBox="0 0 700 120" style="max-height:1.1in;">
+      <rect x="0" y="0" width="700" height="120" rx="14" fill="rgba(255,255,255,0.07)"/>
+      <g font-size="11" font-weight="700" fill="white" text-anchor="middle">
+        <rect x="50" y="35" width="120" height="50" rx="8" fill="#E85A3B"/><text x="110" y="55">Pool A</text><text x="110" y="70">9%</text>
+        <text x="195" y="65" font-size="20" fill="#FFE9A8">&#8594;</text>
+        <rect x="230" y="35" width="120" height="50" rx="8" fill="#22B6A6"/><text x="290" y="55">Pool B</text><text x="290" y="70">4%</text>
+      </g>
+      <g transform="translate(430,20)">
+        <rect x="0" y="60" width="50" height="20" fill="#6B4CF0"/>
+        <rect x="0" y="40" width="50" height="20" fill="#8C6CF5"/>
+        <rect x="0" y="20" width="50" height="20" fill="#A883F7"/>
+        <rect x="0" y="0" width="50" height="20" fill="#C6B4FB"/>
+        <text x="80" y="55" font-size="11" fill="white" font-weight="700">Leverage</text>
+        <text x="80" y="70" font-size="11" fill="white" font-weight="700">Loop</text>
+      </g>
+    </svg>
+    <div class="scene-caption">Refinance: move debt to a cheaper pool. Leverage loop: stack the position in one atomic step.</div>
+
+    <p><strong>Debt Refinance.</strong> If Pool A charges 9% and Pool B only 4% for the same asset, it's worth moving. Borrow the payoff amount, repay Pool A, withdraw collateral, redeposit on Pool B, re-borrow to repay the flash loan — all in one transaction, never left holding an unsecured loan halfway through.</p>
+
+    <p><strong>Leverage Loop.</strong> Build a bigger position than your own capital allows by looping deposit-and-borrow. A flash loan compresses the whole loop into one atomic step: borrow the full target amount up front, build the leveraged position at once, unwind the flash loan using the position itself.</p>
+
+    <div class="story-box">
+      <span class="story-label">A Word of Caution</span>
+      <p>Leverage loops amplify gains <em>and</em> losses equally. This is a tool, not a guarantee — exactly what the next chapter's Shield exists to protect against. <strong>Deleverage / Close</strong> is the mirror image: unwinding a position quickly, before a liquidation threshold is reached.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 13 — EXERCISE 4 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-gold"></div>
+  <div class="content dark-text">
+    <span class="badge-light badge">TRY IT YOURSELF</span>
+    <h2 class="chapter-title">Exercise 4 — Match the Strategy</h2>
+    <p>Match each scenario on the left to the strategy name on the right.</p>
+
+    <ul class="styled">
+      <li><strong>1.</strong> Moving collateral from a volatile asset to a stablecoin without a gap in coverage.</li>
+      <li><strong>2.</strong> Building a bigger position than your own capital alone would allow, in one transaction.</li>
+      <li><strong>3.</strong> Moving an existing loan from a high-interest pool to a cheaper one.</li>
+      <li><strong>4.</strong> Buying an asset cheaply on one venue and selling it for more on another.</li>
+      <li><strong>5.</strong> Quickly shrinking a position whose safety margin is deteriorating.</li>
+    </ul>
+    <p><strong>Options:</strong> A) Debt Refinance &nbsp; B) Flash Arbitrage &nbsp; C) Collateral Swap &nbsp; D) Deleverage / Close &nbsp; E) Leverage Loop</p>
+
+    <div class="answer-box" style="background:rgba(255,255,255,0.75); border-color:rgba(255,255,255,0.9);">
+      <span class="story-label" style="color:#B5750E;">Answers</span>
+      <p>1 &rarr; C (Collateral Swap) &nbsp;&nbsp; 2 &rarr; E (Leverage Loop) &nbsp;&nbsp; 3 &rarr; A (Debt Refinance) &nbsp;&nbsp; 4 &rarr; B (Flash Arbitrage) &nbsp;&nbsp; 5 &rarr; D (Deleverage / Close)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 14 — CHAPTER 7: THE SHIELD -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-teal"></div>
+  <div class="circle" style="width:2.6in;height:2.6in;top:-1in;right:-1in;"></div>
+  <div class="circle" style="width:2in;height:2in;bottom:-0.8in;left:-0.8in;background:rgba(255,255,255,0.07);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">Chapter 7</span>
+    <h2 class="chapter-title">The Shield — Staying Safe</h2>
+
+    <p>Every strategy in this guide sounds tidy on paper. In the real world several things can go wrong between "I designed this spell chain" and "it worked exactly as planned." The Shield is shorthand for the habits and checks that keep those risks in view.</p>
+
+    <svg class="scene" viewBox="0 0 700 160" style="max-height:1.5in;"><defs><!-- COIN: money character -->
+  <g id="icon-coin">
+    <path d="M14 78 Q2 92 10 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="10" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <path d="M106 78 Q118 92 110 108" stroke="#D69A12" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="110" cy="108" r="6" fill="#F5C242" stroke="#D69A12" stroke-width="2"/>
+    <circle cx="60" cy="55" r="46" fill="#F5C242" stroke="#D69A12" stroke-width="3"/>
+    <circle cx="60" cy="55" r="46" fill="none" stroke="#FFF" stroke-width="1" opacity="0.4"/>
+    <path d="M60 30 L68 55 L60 50 L52 55 Z M52 55 L60 60 L68 55 L60 80 Z" fill="#6B4CF0"/>
+    <circle cx="42" cy="40" r="4.2" fill="#2A2440"/>
+    <circle cx="78" cy="40" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 78 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="45" cy="100" rx="10" ry="4" fill="#2A2440"/>
+    <ellipse cx="75" cy="100" rx="10" ry="4" fill="#2A2440"/>
+  </g>
+
+  <!-- VAULT: DSA smart account character -->
+  <g id="icon-vault">
+    <path d="M16 60 Q2 68 6 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="6" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <path d="M104 60 Q118 68 114 84" stroke="#5B3FE0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="114" cy="84" r="6" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="20" y="25" width="80" height="75" rx="14" fill="#8C6CF5" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="45" cy="52" r="4.2" fill="#2A2440"/>
+    <circle cx="75" cy="52" r="4.2" fill="#2A2440"/>
+    <path d="M45 68 Q60 76 75 68" stroke="#2A2440" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <rect x="42" y="82" width="36" height="26" rx="6" fill="white" stroke="#5B3FE0" stroke-width="3"/>
+    <circle cx="60" cy="95" r="8" fill="none" stroke="#5B3FE0" stroke-width="2.5"/>
+    <line x1="60" y1="95" x2="60" y2="90" stroke="#5B3FE0" stroke-width="2"/>
+    <line x1="60" y1="95" x2="64" y2="97" stroke="#5B3FE0" stroke-width="2"/>
+    <rect x="14" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+    <rect x="92" y="100" width="14" height="12" rx="3" fill="#5B3FE0"/>
+  </g>
+
+  <!-- ROBOT: automation character -->
+  <g id="icon-robot">
+    <path d="M12 68 Q0 76 4 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="4" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <path d="M108 68 Q120 76 116 92" stroke="#E0642F" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="116" cy="92" r="6" fill="#FF8A5C" stroke="#E0642F" stroke-width="2"/>
+    <rect x="42" y="20" width="36" height="26" rx="8" fill="#FF8A5C" stroke="#E0642F" stroke-width="3"/>
+    <line x1="60" y1="20" x2="60" y2="8" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="6" r="4" fill="#FF3B5C"/>
+    <circle cx="52" cy="33" r="4.2" fill="#2A2440"/>
+    <circle cx="68" cy="33" r="4.2" fill="#2A2440"/>
+    <rect x="34" y="50" width="52" height="48" rx="10" fill="white" stroke="#E0642F" stroke-width="3"/>
+    <circle cx="60" cy="74" r="14" fill="none" stroke="#FF8A5C" stroke-width="3"/>
+    <line x1="60" y1="74" x2="60" y2="65" stroke="#FF8A5C" stroke-width="2.5"/>
+    <line x1="60" y1="74" x2="67" y2="78" stroke="#FF8A5C" stroke-width="2.5"/>
+    <rect x="14" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+    <rect x="92" y="102" width="14" height="12" rx="3" fill="#E0642F"/>
+  </g>
+
+  <!-- SHIELD: safety character -->
+  <g id="icon-shield">
+    <path d="M16 66 Q4 74 8 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="8" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M104 66 Q116 74 112 90" stroke="#1F9E8C" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <circle cx="112" cy="90" r="6" fill="#33C6B0" stroke="#1F9E8C" stroke-width="2"/>
+    <path d="M60 15 L100 30 V60 C100 88 82 104 60 112 C38 104 20 88 20 60 V30 Z" fill="#33C6B0" stroke="#1F9E8C" stroke-width="3"/>
+    <circle cx="48" cy="55" r="4.2" fill="#0E4A42"/>
+    <circle cx="72" cy="55" r="4.2" fill="#0E4A42"/>
+    <path d="M46 70 Q60 82 74 70" stroke="#0E4A42" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+
+</defs>
+      <rect x="0" y="0" width="700" height="160" rx="14" fill="rgba(255,255,255,0.10)"/>
+      <g transform="translate(50,25)"><use href="#icon-shield"/></g>
+      <rect x="230" y="20" width="420" height="120" rx="10" fill="white"/>
+      <g font-size="12" fill="#2A2440">
+        <circle cx="255" cy="42" r="6" fill="#33C6B0"/><text x="270" y="47">Slippage bounds set</text>
+        <circle cx="255" cy="68" r="6" fill="#33C6B0"/><text x="270" y="73">Contracts audited</text>
+        <circle cx="255" cy="94" r="6" fill="#33C6B0"/><text x="270" y="99">Profit gate enforced</text>
+        <circle cx="255" cy="120" r="6" fill="#33C6B0"/><text x="270" y="125">Tested on a forked network</text>
+      </g>
+    </svg>
+
+    <ul class="styled">
+      <li><strong>Smart contract risk:</strong> favour audited, battle-tested protocols and connectors; test on a forked network before touching real funds.</li>
+      <li><strong>Slippage:</strong> set a minimum-acceptable-output so a spell reverts rather than executing at a much worse price.</li>
+      <li><strong>MEV &amp; front-running:</strong> private transaction relays and tight slippage bounds reduce exposure to being sandwiched.</li>
+      <li><strong>Gas wars:</strong> a profit-gate check stops you "winning" a race that then costs more in gas than the strategy made.</li>
+      <li><strong>Revert-safety nets:</strong> a flash-loan strategy is only as safe as the checks written into every spell — not just the happy path.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 15 — FINAL QUIZ -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-cream"></div>
+  <div class="content dark-text">
+    <span class="badge" style="background:#F1E9FF; color:#5B3FE0;">FINAL REVIEW</span>
+    <h2 class="chapter-title">Final Quiz</h2>
+    <p>A last check across everything covered in this guide.</p>
+
+    <div class="quiz-q"><span class="qnum">1.</span>What single property of blockchain transactions makes flash loans possible without collateral?</div>
+    <div class="quiz-q"><span class="qnum">2.</span>What is the Instadapp term for a single instruction inside a sequence of DeFi actions?</div>
+    <div class="quiz-q"><span class="qnum">3.</span>Why must a connector be individually verified as live on a given network, even if it works elsewhere?</div>
+    <div class="quiz-q"><span class="qnum">4.</span>Name two risks a well-designed strategy should explicitly guard against.</div>
+    <div class="quiz-q"><span class="qnum">5.</span>What is the difference between a Leverage Loop and a Deleverage/Close strategy?</div>
+
+    <div class="answer-box">
+      <span class="story-label">Answers</span>
+      <p><strong>1.</strong> Atomicity — every step succeeds together or the whole transaction reverts.<br>
+      <strong>2.</strong> A "spell" (a chain of them is a "spell chain").<br>
+      <strong>3.</strong> Deployment and functionality vary by network — a connector can work fully on one chain and be absent, unaudited, or non-functional on another.<br>
+      <strong>4.</strong> Any two of: smart contract risk, slippage, MEV/front-running, gas wars, missing revert-safety checks.<br>
+      <strong>5.</strong> A Leverage Loop builds a bigger position by repeatedly borrowing and redepositing; a Deleverage/Close does the opposite, quickly shrinking a position to protect it from liquidation.</p>
+    </div>
+
+    <div class="divider on-cream"></div>
+    <h2 class="chapter-title" style="font-size:15pt;">Mini Glossary</h2>
+    <table class="glossary">
+      <tr><td class="term">Flash Loan</td><td>An uncollateralised loan that must be borrowed and repaid within a single blockchain transaction.</td></tr>
+      <tr><td class="term">Atomicity</td><td>The all-or-nothing property of a transaction: every step succeeds, or the whole thing reverts.</td></tr>
+      <tr><td class="term">DSA</td><td>Decentralized Smart Account — Instadapp's smart-contract wallet for running spell chains.</td></tr>
+      <tr><td class="term">Spell / Spell Chain</td><td>A single DeFi action, or an ordered sequence of them executed atomically.</td></tr>
+      <tr><td class="term">Connector</td><td>Standardised code that lets a DSA speak a specific protocol's language (Aave, Uniswap, etc).</td></tr>
+      <tr><td class="term">Health Factor</td><td>A numeric measure of how safe a leveraged loan is from liquidation; lower is riskier.</td></tr>
+      <tr><td class="term">MEV</td><td>Maximal Extractable Value — profit others can capture by reordering or inserting transactions around yours.</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- PAGE 16 — ABOUT THIS GUIDE / GITHUB PROJECT -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="bg bg-purple"></div>
+  <div class="circle" style="width:3in;height:3in;top:-1.1in;right:-1.1in;"></div>
+  <div class="circle" style="width:2.2in;height:2.2in;bottom:-0.9in;left:-0.9in;background:rgba(255,255,255,0.06);"></div>
+  <div class="content light-text">
+    <span class="chapter-kicker">About This Project</span>
+    <h2 class="chapter-title">Flash Loans, Demystified — the Guide, the Repo</h2>
+
+    <p>This guide began as a short internal reference and grew into a full illustrated primer, written to make one genuinely useful but often intimidating corner of DeFi — flash loans and Instadapp Pro's spell-based automation — approachable to anyone willing to read a story and try a few exercises.</p>
+
+    <p><strong>What's in the repository:</strong></p>
+    <ul class="styled">
+      <li>The full source for this guide (HTML/CSS, rendered to PDF), so anyone can fork it, retheme it, or translate it.</li>
+      <li>The illustrated character set (coin, vault, robot, shield) and cartoon scenes as reusable inline SVG assets.</li>
+      <li>All exercises and answer keys in this document, usable standalone as a teaching worksheet.</li>
+      <li>A glossary file suitable for reuse in other DeFi documentation.</li>
+    </ul>
+
+    <p><strong>Who this is for:</strong> developers new to DeFi automation, product and business stakeholders who need the concepts in plain English before a technical conversation, and anyone curious how a flash loan actually works under the hood without wading through a whitepaper first.</p>
+
+    <p><strong>Contributing:</strong> issues and pull requests are welcome — new chapters, corrections, additional exercises, or translations are all fair game. Please open an issue first for any structural changes so the story stays consistent chapter to chapter.</p>
+
+    <p><strong>Disclaimer:</strong> this guide is educational only. It is not financial advice, and none of the strategies described should be deployed with real funds without your own independent testing, auditing, and risk assessment.</p>
+  </div>
+
+  <div class="cover-footer">
+    <div class="authorline">Kayode Okosi &middot; Knatware Technology UK</div>
+    <div>Contact: kayode@knatware.com &middot; Illustrated technical primer &middot; educational only, not financial advice &middot; page 16 / 16</div>
+  </div>
+</div>
+
+</body>
+</html>
